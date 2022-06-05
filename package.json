@@ -1,0 +1,15 @@
+{
+  "name": "docubox",
+  "version": "1.0.0",
+  "description": "a secure cloud storage platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "author": "ishant",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16"
+  }
+}
