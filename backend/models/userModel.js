@@ -1,6 +1,7 @@
-const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 
+// User database object's structural representation
 const userSchema = mongoose.Schema(
   {
     userName: {
@@ -18,6 +19,7 @@ const userSchema = mongoose.Schema(
     userProfilePicture: {
       type: String,
       require: false,
+      default: "dummy.jpg",
     },
   },
   {
@@ -25,7 +27,8 @@ const userSchema = mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async (next) => {
+// Before saving the user, encrypt the password
+userSchema.pre("save", async function (next) {
   if (!this.isModified("userPassword")) {
     next();
   }
@@ -33,7 +36,8 @@ userSchema.pre("save", async (next) => {
   this.userPassword = await bcrypt.hash(this.userPassword, salt);
 });
 
-userSchema.methods.matchPassword = async (inputPassword) => {
+// To check if input password is correct or not
+userSchema.methods.matchPassword = async function (inputPassword) {
     return await bcrypt.compare(inputPassword,this.userPassword);
 }
 
