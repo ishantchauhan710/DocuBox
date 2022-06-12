@@ -3,30 +3,28 @@ const generateToken = require("../config/tokenGenerator.js");
 const User = require("../models/userModel.js");
 
 const signupUserController = expressAsyncHandler(async (req, res) => {
-  const { userName, userEmail, userPassword, userProfilePicture } = req.body;
+  const { userName, userEmail, userPassword } = req.body;
 
-  if(!userName) {
+  if (!userName) {
     res.status(400).json({
-      message: "Username cannot be blank"
+      message: "Username cannot be blank",
     });
     return;
   }
 
-  if(!userEmail) {
+  if (!userEmail) {
     res.status(400).json({
-      message: "Email cannot be blank"
-    });
-    return;
-  }
-  if(!userPassword) {
-    res.status(400).json({
-      message: "Password cannot be blank"
+      message: "Email cannot be blank",
     });
     return;
   }
 
-
-
+  if (!userPassword) {
+    res.status(400).json({
+      message: "Password cannot be blank",
+    });
+    return;
+  }
 
   const userExists = await User.findOne({ userEmail });
 
@@ -38,8 +36,7 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
   const user = await User.create({
     userName,
     userEmail,
-    userPassword,
-    userProfilePicture,
+    userPassword
   });
 
   if (user) {
@@ -47,7 +44,6 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
       _id: user._id,
       userName: user.userName,
       userEmail: user.userEmail,
-      userProfilePicture: user.userProfilePicture,
       token: generateToken(user._id),
     });
   } else {
