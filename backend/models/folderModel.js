@@ -15,7 +15,7 @@ const folderSchema = mongoose.Schema(
     folderParentDirectory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Folder",
-      require: false
+      require: false,
     },
   },
   {
@@ -23,5 +23,5 @@ const folderSchema = mongoose.Schema(
   }
 );
 
-const Folder = mongoose.model('Folder',folderSchema);
-module.exports = Folder
+const Folder = mongoose.model("Folder", folderSchema);
+module.exports = Folder;

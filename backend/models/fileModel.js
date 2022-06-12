@@ -19,13 +19,13 @@ const fileSchema = mongoose.Schema(
     fileDirectory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Folder",
-      require: true
-    }
+      require: true,
+    },
   },
   {
     timeStamps: true,
   }
 );
 
-const File = mongoose.model('File',fileSchema);
-module.exports = File
+const File = mongoose.model("File", fileSchema);
+module.exports = File;

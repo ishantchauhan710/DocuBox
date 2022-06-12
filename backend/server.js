@@ -24,7 +24,6 @@ connectToDatabase();
 app.use("/api/auth", authRoutes);
 app.use("/api/documents", documentRoutes);
 
-
 // Use middlewares for error handling
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
