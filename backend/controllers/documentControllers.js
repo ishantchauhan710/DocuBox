@@ -44,15 +44,12 @@ const createFolderController = expressAsyncHandler(async (req, res) => {
 
 const getFolderController = expressAsyncHandler(async (req, res) => {
   let { folderParentDirectory } = req.body;
-  const user = req.user._id;
 
   if (!folderParentDirectory) {
     folderParentDirectory = null;
   }
 
-  console.log("UserId: ", user._id);
-
-  let folder = await Folder.find({
+  let folderList = await Folder.find({
     $and: [
       { folderParentDirectory: folderParentDirectory },
       { folderOwner: req.user._id },
@@ -61,9 +58,9 @@ const getFolderController = expressAsyncHandler(async (req, res) => {
     .populate("folderOwner", "-userPassword")
     .populate("folderParentDirectory");
 
-  if (folder) {
+  if (folderList) {
     res.status(201).json({
-      folder: folder,
+      folderList: folderList,
     });
   } else {
     res.status(400);
@@ -103,7 +100,7 @@ const createFileController = expressAsyncHandler(async (req, res) => {
     fileName,
     fileData,
     fileOwner,
-    fileDirectory
+    fileDirectory,
   });
 
   file = await file.populate("fileOwner", "-userPassword");
@@ -123,4 +120,35 @@ const createFileController = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createFolderController, getFolderController, createFileController };
+
+
+const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
+  let { fileDirectory } = req.body;
+
+  if (!fileDirectory) {
+    res.status(400).json({
+      message: "FolderId cannot be blank",
+    });
+    return;
+  }
+
+  let fileList = await File.find({
+    $and: [{ fileDirectory: fileDirectory }, { fileOwner: req.user._id }],
+  }).populate("fileOwner", "-userPassword");
+
+  if (fileList) {
+    res.status(201).json({
+      fileList: fileList,
+    });
+  } else {
+    res.status(400);
+    throw new Error("File not found");
+  }
+});
+
+module.exports = {
+  createFolderController,
+  getFolderController,
+  createFileController,
+  getFilesInFolderController,
+};
