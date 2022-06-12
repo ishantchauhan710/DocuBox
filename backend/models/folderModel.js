@@ -9,12 +9,12 @@ const folderSchema = mongoose.Schema(
     },
     folderOwner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: "User",
       require: true,
     },
     folderParentDirectory: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Folders",
+      ref: "Folder",
       require: false
     },
   },
