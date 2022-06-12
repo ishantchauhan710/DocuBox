@@ -4,7 +4,12 @@ const connectToDatabase = require("./config/db");
 const app = express();
 
 const authRoutes = require("./routes/authRoutes.js");
-const { notFoundMiddleware, errorHandlerMiddleware } = require("./middlewares/errorMiddleware");
+const documentRoutes = require("./routes/documentRoutes.js");
+
+const {
+  notFoundMiddleware,
+  errorHandlerMiddleware,
+} = require("./middlewares/errorMiddleware");
 
 // Enable environmental variable processing
 dotenv.config();
@@ -16,7 +21,9 @@ app.use(express.json());
 connectToDatabase();
 
 // Handle routes
-app.use('/api/auth',authRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/documents", documentRoutes);
+
 
 // Use middlewares for error handling
 app.use(notFoundMiddleware);
