@@ -1,7 +1,13 @@
 const expressAsyncHandler = require("express-async-handler");
+
+const path = require("path");
 const File = require("../models/fileModel.js");
 const Folder = require("../models/folderModel.js");
-const { uploadFileToServer } = require("../util/fileHandler.js");
+const {
+  uploadFileToServer,
+  getUniqueFileName,
+  getOriginalFileName
+} = require("../util/fileHandler.js");
 
 // *********************** Folder Controllers ************************/
 
@@ -72,70 +78,70 @@ const getFolderController = expressAsyncHandler(async (req, res) => {
 // *********************** File Controllers ************************/
 
 const createFileController = expressAsyncHandler(async (req, res) => {
-  const file = req.body.fileData;
+  let { file, fileDirectory } = req.body;
   console.log("File: ", file);
+  let fileUploadSuccessful = false;
 
   if (!file) {
-    res.status(400);
-    throw new Error("File Data cannot be blank");
+    res.status(400).json({
+      message: "File data cannot be blank",
+    });
+    return;
   }
+
+  if (!fileDirectory) {
+    res.status(400).json({
+      message: "File directory cannot be blank",
+    });
+    return;
+  }
+
+  let fileName = getUniqueFileName(path.basename(file));
+  console.log("Unique File Name: ", fileName);
+
+  const fileOwner = req.user._id;
+  console.log("File Owner: ", fileOwner);
 
   try {
-    const result = await uploadFileToServer(file);
-    console.log("Result: ", result);
-    res.status(201).json({ message: "File uploaded successsfully!" });
+    await uploadFileToServer(fileName, file);
+    console.log("File upload successful");
+    //res.status(201).json({ message: "File uploaded suceessfully" });
+    fileUploadSuccessful = true
   } catch (e) {
     res.status(400);
-    throw new Error("Error uploading file: ", e.message);
+    throw new Error("Error: ", e);
   }
 
-  // let { fileName, fileData, fileDirectory } = req.body;
+  if (fileUploadSuccessful) {
+    const storageURL = process.env.STORAGE_URL;
+    const fileData = `${storageURL}/${fileName}`;
+    fileName = getOriginalFileName(fileData)
 
-  // if (!fileName) {
-  //   res.status(400).json({
-  //     message: "File name cannot be blank",
-  //   });
-  //   return;
-  // }
+    let file = await File.create({
+      fileName,
+      fileData,
+      fileOwner,
+      fileDirectory,
+    });
 
-  // if (!fileData) {
-  //   res.status(400).json({
-  //     message: "File data cannot be blank",
-  //   });
-  //   return;
-  // }
+    file = await file.populate("fileOwner", "-userPassword");
+    file = await file.populate("fileDirectory");
 
-  // if (!fileDirectory) {
-  //   res.status(400).json({
-  //     message: "File directory cannot be blank",
-  //   });
-  //   return;
-  // }
-
-  // const fileOwner = req.user._id;
-
-  // let file = await File.create({
-  //   fileName,
-  //   fileData,
-  //   fileOwner,
-  //   fileDirectory,
-  // });
-
-  // file = await file.populate("fileOwner", "-userPassword");
-  // file = await file.populate("fileDirectory");
-
-  // if (file) {
-  //   res.status(201).json({
-  //     _id: file._id,
-  //     fileName: file.fileName,
-  //     fileData: file.fileData,
-  //     fileOwner: file.fileOwner,
-  //     fileDirectory: file.fileDirectory,
-  //   });
-  // } else {
-  //   res.status(400);
-  //   throw new Error("An unknown error occurred");
-  // }
+    if (file) {
+      res.status(201).json({
+        _id: file._id,
+        fileName: file.fileName,
+        fileData: file.fileData,
+        fileOwner: file.fileOwner,
+        fileDirectory: file.fileDirectory,
+      });
+    } else {
+      res.status(400);
+      throw new Error("An unknown error occurred");
+    }
+  } else {
+    console.log("Mongo File Upload Failed")
+  }
 });
 
 const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
