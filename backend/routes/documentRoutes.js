@@ -9,11 +9,11 @@ const {
 const { multerStorage } = require("../config/multerConfig");
 const router = express.Router();
 
-router.route("/createfolder").post(authMiddleware, createFolderController);
-router.route("/getfoldersinfolder").post(authMiddleware, getFolderController);
+router.route("/create-folder").post(authMiddleware, createFolderController);
+router.route("/get-folders-in-folder").post(authMiddleware, getFolderController);
 
 router
-  .route("/createfile")
+  .route("/create-file")
   .post(
     authMiddleware,
     multerStorage.array("upload", 25),
@@ -21,7 +21,7 @@ router
   );
 
 router
-  .route("/getfilesinfolder")
+  .route("/get-files-in-folder")
   .post(authMiddleware, getFilesInFolderController);
 
 module.exports = router;
