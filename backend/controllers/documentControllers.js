@@ -76,84 +76,49 @@ const getFolderController = expressAsyncHandler(async (req, res) => {
 // *********************** File Controllers ************************/
 
 const createFileController = expressAsyncHandler(async (req, res) => {
-  res.send({
-    message: "File uploaded successfully!",
-    urls: req.files.map(function (file) {
-      return {
-        url: file.location,
-        name: file.key,
-        type: file.mimetype,
-        size: file.size,
-      };
-    }),
+  const { fileDirectory } = req.body;
+
+  if (!req.files) {
+    res.status(400).json({
+      message: "File data cannot be blank",
+    });
+    return;
+  }
+
+  if (!fileDirectory) {
+    res.status(400).json({
+      message: "File directory cannot be blank",
+    });
+    return;
+  }
+
+  let file = req.files[0];
+
+  const fileName = file.key;
+  const fileStorageUrl = file.location;
+  const fileType = file.mimetype;
+  const fileSize = file.size;
+  const fileOwner = req.user._id;
+
+  let uploadedFile = await File.create({
+    fileName,
+    fileStorageUrl,
+    fileType,
+    fileSize,
+    fileOwner,
+    fileDirectory,
   });
+
+  uploadedFile = await uploadedFile.populate("fileOwner", "-userPassword");
+  uploadedFile = await uploadedFile.populate("fileDirectory");
+
+  if (uploadedFile) {
+    res.status(201).json({ file: uploadedFile });
+  } else {
+    res.status(400);
+    throw new Error("An unknown error occurred");
+  }
 });
-
-// let { file, fileDirectory } = req.body;
-// console.log("File: ", file);
-// let fileUploadSuccessful = false;
-
-// if (!file) {
-//   res.status(400).json({
-//     message: "File data cannot be blank",
-//   });
-//   return;
-// }
-
-// if (!fileDirectory) {
-//   res.status(400).json({
-//     message: "File directory cannot be blank",
-//   });
-//   return;
-// }
-
-// let fileName = getUniqueFileName(path.basename(file));
-// console.log("Unique File Name: ", fileName);
-
-// const fileOwner = req.user._id;
-// console.log("File Owner: ", fileOwner);
-
-// try {
-//   await uploadFileToServer(fileName, file);
-//   console.log("File upload successful");
-//   //res.status(201).json({ message: "File uploaded suceessfully" });
-//   fileUploadSuccessful = true
-// } catch (e) {
-//   res.status(400);
-//   throw new Error("Error: ", e);
-// }
-
-// if (fileUploadSuccessful) {
-//   const storageURL = process.env.STORAGE_URL;
-//   const fileData = `${storageURL}/${fileName}`;
-//   fileName = getOriginalFileName(fileData)
-
-//   let file = await File.create({
-//     fileName,
-//     fileData,
-//     fileOwner,
-//     fileDirectory,
-//   });
-
-//   file = await file.populate("fileOwner", "-userPassword");
-//   file = await file.populate("fileDirectory");
-
-//   if (file) {
-//     res.status(201).json({
-//       _id: file._id,
-//       fileName: file.fileName,
-//       fileData: file.fileData,
-//       fileOwner: file.fileOwner,
-//       fileDirectory: file.fileDirectory,
-//     });
-//   } else {
-//     res.status(400);
-//     throw new Error("An unknown error occurred");
-//   }
-// } else {
-//   console.log("Mongo File Upload Failed")
-// }
-//});
 
 const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   let { fileDirectory } = req.body;
