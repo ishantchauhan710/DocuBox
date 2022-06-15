@@ -124,10 +124,7 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   let { fileDirectory } = req.body;
 
   if (!fileDirectory) {
-    res.status(400).json({
-      message: "FolderId cannot be blank",
-    });
-    return;
+    fileDirectory = null
   }
 
   let fileList = await File.find({
