@@ -3,14 +3,20 @@ const { authMiddleware } = require("../middlewares/authMiddleware");
 const {
   createFolderController,
   getFolderController,
+} = require("../controllers/folderControllers");
+
+const {
   createFileController,
   getFilesInFolderController,
-} = require("../controllers/documentControllers");
+} = require("../controllers/fileControllers");
+
 const { multerStorage } = require("../config/multerConfig");
 const router = express.Router();
 
 router.route("/create-folder").post(authMiddleware, createFolderController);
-router.route("/get-folders-in-folder").post(authMiddleware, getFolderController);
+router
+  .route("/get-folders-in-folder")
+  .post(authMiddleware, getFolderController);
 
 router
   .route("/create-file")
