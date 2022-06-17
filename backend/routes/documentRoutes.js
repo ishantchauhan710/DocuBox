@@ -8,6 +8,7 @@ const {
 const {
   createFileController,
   getFilesInFolderController,
+  searchFilesUsingNameController,
 } = require("../controllers/fileControllers");
 
 const { multerStorage } = require("../config/multerConfig");
@@ -26,8 +27,14 @@ router
     createFileController
   );
 
-router
+  router
   .route("/get-files-in-folder")
   .post(authMiddleware, getFilesInFolderController);
+
+  router
+  .route("/search-file-name")
+  .post(authMiddleware, searchFilesUsingNameController);
+
+  
 
 module.exports = router;

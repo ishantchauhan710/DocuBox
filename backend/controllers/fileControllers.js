@@ -74,7 +74,45 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const searchFilesUsingNameController = expressAsyncHandler(async (req, res) => {
+  const { fileNameQuery } = req.body;
+
+  if (!fileNameQuery) {
+    res.status(400).json({ message: "File name query cannot be blank" });
+  }
+
+  // Get all files of that user
+  const fileList = await File.find({ fileOwner: req.user._id }).populate(
+    "fileOwner",
+    "-userPassword"
+  );
+
+  // Declare an empty array to store files
+  let filteredFileList = [];
+
+  if (fileList) {
+    fileList.forEach((fileItem) => {
+      // Convert the filename to its original form
+      fileItem.fileName = getOriginalFileName(fileItem.fileName);
+
+      if (fileItem.fileName.includes(fileNameQuery)) {
+        filteredFileList.push(fileItem);
+      }
+    });
+
+    res.status(201).json({
+      fileList: filteredFileList,
+    });
+  } else {
+    res.status(400).json({
+      message: "File not found",
+    });
+    return;
+  }
+});
+
 module.exports = {
   createFileController,
   getFilesInFolderController,
+  searchFilesUsingNameController,
 };
