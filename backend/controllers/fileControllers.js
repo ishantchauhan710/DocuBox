@@ -1,5 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
+const { getOriginalFileName } = require("../util/fileUtil.js");
 
 const createFileController = expressAsyncHandler(async (req, res) => {
   const { fileDirectory } = req.body;
@@ -58,6 +59,10 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   }).populate("fileOwner", "-userPassword");
 
   if (fileList) {
+    fileList.forEach((fileItem) => {
+      fileItem.fileName = getOriginalFileName(fileItem.fileName);
+    });
+
     res.status(201).json({
       fileList: fileList,
     });
