@@ -17,9 +17,12 @@ const createFolderController = expressAsyncHandler(async (req, res) => {
 
   const folderOwner = req.user._id;
 
+  const folderSharedTo = [];
+
   let folder = await Folder.create({
     folderName,
     folderOwner,
+    folderSharedTo,
     folderParentDirectory,
   });
 
@@ -28,10 +31,7 @@ const createFolderController = expressAsyncHandler(async (req, res) => {
 
   if (folder) {
     res.status(201).json({
-      _id: folder._id,
-      folderName: folder.folderName,
-      folderOwner: folder.folderOwner,
-      folderParentDirectory: folder.folderParentDirectory,
+      folder: folder,
     });
   } else {
     res.status(400).json({

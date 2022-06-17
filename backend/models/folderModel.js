@@ -12,6 +12,10 @@ const folderSchema = mongoose.Schema(
       ref: "User",
       require: true,
     },
+    folderSharedTo: {
+      type: [String],
+      require: true
+    },
     folderParentDirectory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Folder",
