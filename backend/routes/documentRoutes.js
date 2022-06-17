@@ -18,6 +18,7 @@ const {
   shareFileController,
   revokeFileAccessController,
   getFilesSharedToMeController,
+  getFilesSharedByMeController,
 } = require("../controllers/shareFileControllers");
 
 const {
@@ -68,6 +69,10 @@ router
   .post(authMiddleware, revokeFolderAccessController);
 
 
-router.route("/get-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
+  router.route("/get-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
+
+  router.route("/get-shared-by-me").post(authMiddleware, getFilesSharedByMeController);
+
+
 
 module.exports = router;
