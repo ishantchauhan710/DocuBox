@@ -34,7 +34,7 @@ const shareFolderController = expressAsyncHandler(async (req, res) => {
   } else {
     return res
       .status(201)
-      .json({ message: "User already has access to the file" });
+      .json({ message: "User already has access to the folder" });
   }
 });
 
@@ -78,7 +78,37 @@ const revokeFolderAccessController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const getFoldersSharedToMeController = expressAsyncHandler(async (req, res) => {
+  const me = await User.findById(req.user._id);
+  const myEmail = me.userEmail;
+
+  const folderList = await Folder.find({ folderSharedTo: { $in: [myEmail] } });
+
+  if (!folderList) {
+    res.status(400).json({ message: "No folders found" });
+  } else {
+    res.status(201).json({ folderList: folderList });
+  }
+});
+
+const getFoldersSharedByMeController = expressAsyncHandler(async (req, res) => {
+  const folderList = await Folder.find({
+    $and: [
+      { folderOwner: req.user._id },
+      { folderSharedTo: { $exists: true, $not: { $size: 0 } } },
+    ],
+  });
+
+  if (!folderList) {
+    res.status(400).json({ message: "No folders found" });
+  } else {
+    res.status(201).json({ folderList: folderList });
+  }
+});
+
 module.exports = {
   shareFolderController,
   revokeFolderAccessController,
+  getFoldersSharedToMeController,
+  getFoldersSharedByMeController
 };

@@ -24,6 +24,8 @@ const {
 const {
   shareFolderController,
   revokeFolderAccessController,
+  getFoldersSharedToMeController,
+  getFoldersSharedByMeController,
 } = require("../controllers/shareFolderControllers");
 
 const router = express.Router();
@@ -69,9 +71,15 @@ router
   .post(authMiddleware, revokeFolderAccessController);
 
 
-  router.route("/get-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
+  router.route("/get-files-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
 
-  router.route("/get-shared-by-me").post(authMiddleware, getFilesSharedByMeController);
+  router.route("/get-files-shared-by-me").post(authMiddleware, getFilesSharedByMeController);
+
+  router.route("/get-folders-shared-to-me").post(authMiddleware, getFoldersSharedToMeController);
+
+  router.route("/get-folders-shared-by-me").post(authMiddleware, getFoldersSharedByMeController);
+
+  
 
 
 
