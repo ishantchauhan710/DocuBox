@@ -78,7 +78,22 @@ const revokeFileAccessController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const getFilesSharedToMeController = expressAsyncHandler(async (req, res) => {
+  const me = await User.findById(req.user._id);
+  const myEmail = me.userEmail;
+
+  const fileList = await File.find({ fileSharedTo: { $in: [myEmail] } });
+
+  if(!fileList) {
+    res.status(400).json({message: "No files found"})
+  } else {
+    res.status(201).json({fileList: fileList})
+  }
+
+});
+
 module.exports = {
   shareFileController,
   revokeFileAccessController,
+  getFilesSharedToMeController,
 };

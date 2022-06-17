@@ -17,6 +17,7 @@ const { multerStorage } = require("../config/multerConfig");
 const {
   shareFileController,
   revokeFileAccessController,
+  getFilesSharedToMeController,
 } = require("../controllers/shareFileControllers");
 
 const {
@@ -65,5 +66,8 @@ router.route("/revoke-file").post(authMiddleware, revokeFileAccessController);
 router
   .route("/revoke-folder")
   .post(authMiddleware, revokeFolderAccessController);
+
+
+router.route("/get-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
 
 module.exports = router;
