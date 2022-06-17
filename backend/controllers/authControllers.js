@@ -29,14 +29,19 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
   const userExists = await User.findOne({ userEmail });
 
   if (userExists) {
-    res.status(400).json({message: "User with provided email already exists"});
+    res
+      .status(400)
+      .json({ message: "User with provided email already exists" });
     return;
   }
+
+  const userStorageConsumption = "0";
 
   const user = await User.create({
     userName,
     userEmail,
-    userPassword
+    userPassword,
+    userStorageConsumption,
   });
 
   if (user) {
@@ -47,7 +52,7 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(400).json({message: "An unknown error occurred"});
+    res.status(400).json({ message: "An unknown error occurred" });
     return;
   }
 });
@@ -69,7 +74,7 @@ const loginUserController = expressAsyncHandler(async (req, res) => {
     return;
   }
 
-  const dbUser = await User.findOne({userEmail });
+  const dbUser = await User.findOne({ userEmail });
 
   if (dbUser) {
     if (await dbUser.matchPassword(userPassword)) {
@@ -77,7 +82,7 @@ const loginUserController = expressAsyncHandler(async (req, res) => {
         _id: dbUser._id,
         userName: dbUser.userName,
         userEmail: dbUser.userEmail,
-        token: generateToken(dbUser._id)
+        token: generateToken(dbUser._id),
       });
     } else {
       res.status(400).json({

@@ -16,6 +16,10 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    userStorageConsumption: {
+      type: String,
+      require: true
+    }
   },
   {
     timeStamps: true,

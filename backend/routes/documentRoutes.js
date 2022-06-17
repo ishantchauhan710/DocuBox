@@ -29,26 +29,20 @@ router
     createFileController
   );
 
-  router
+router
   .route("/get-files-in-folder")
   .post(authMiddleware, getFilesInFolderController);
 
-  router
+router
   .route("/search-file-name")
   .post(authMiddleware, searchFilesUsingNameController);
 
-  router
+router
   .route("/search-file-type")
   .post(authMiddleware, searchFilesUsingTypeController);
 
-  router
+router
   .route("/storage-consumption")
   .post(authMiddleware, getTotalStorageConsumptionController);
-
-  
-
-  
-
-  
 
 module.exports = router;

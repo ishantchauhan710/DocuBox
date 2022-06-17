@@ -1,5 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
+const User = require("../models/userModel.js");
 const { getOriginalFileName } = require("../util/fileUtil.js");
 
 const createFileController = expressAsyncHandler(async (req, res) => {
@@ -38,6 +39,21 @@ const createFileController = expressAsyncHandler(async (req, res) => {
 
   uploadedFile = await uploadedFile.populate("fileOwner", "-userPassword");
   uploadedFile = await uploadedFile.populate("fileDirectory");
+
+  // Updated storage consumption in user schema
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return res.status(400).json({
+      message: "No user found",
+    });
+  } else {
+    const currentStorageConsumption = user.userStorageConsumption;
+    const updatedStorageConsumption =
+      parseInt(currentStorageConsumption) + parseInt(fileSize);
+    await User.findByIdAndUpdate(req.user._id, {
+      userStorageConsumption: updatedStorageConsumption,
+    });
+  }
 
   if (uploadedFile) {
     res.status(201).json({ file: uploadedFile });
@@ -139,26 +155,15 @@ const searchFilesUsingTypeController = expressAsyncHandler(async (req, res) => {
 
 const getTotalStorageConsumptionController = expressAsyncHandler(
   async (req, res) => {
-    let fileList = await File.find({ fileOwner: req.user._id }).populate(
-      "fileOwner",
-      "-userPassword"
-    );
-
-    let size = 0;
-
-    if (fileList) {
-      fileList.forEach((fileItem) => {
-        size += parseInt(fileItem.fileSize);
-      });
-
-      res.status(201).json({
-        storageConsumption: size,
-      });
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ message: "No user found" });
     } else {
-      res.status(400).json({
-        message: "File not found",
-      });
-      return;
+      // Return storage conmsumption in megabytes (Mb)
+      const storageConsumption = (
+        user.userStorageConsumption / 1000000
+      ).toFixed(2);
+      return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
 );
@@ -168,5 +173,5 @@ module.exports = {
   getFilesInFolderController,
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
-  getTotalStorageConsumptionController
+  getTotalStorageConsumptionController,
 };
