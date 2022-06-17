@@ -39,6 +39,46 @@ const shareFileController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const revokeFileAccessController = expressAsyncHandler(async (req, res) => {
+  const { fileId, userToRevokeEmail } = req.body;
+
+  if (!userToRevokeEmail) {
+    return res.status(400).json({ message: "User cannot be blank" });
+  }
+
+  if (!fileId) {
+    return res.status(400).json({ message: "FileId cannot be blank" });
+  }
+
+  const user = await User.findOne({ userEmail: userToRevokeEmail });
+
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+
+  const file = await File.findById(fileId);
+  if (!file) {
+    return res.status(400).json({ message: "No such file exists" });
+  }
+
+  const fileSharedTo = file.fileSharedTo;
+  if (fileSharedTo.includes(userToRevokeEmail)) {
+    const updatedFileSharedTo = fileSharedTo.filter(
+      (value) => value !== userToRevokeEmail
+    );
+    await File.findByIdAndUpdate(fileId, {
+      fileSharedTo: updatedFileSharedTo,
+    });
+    return res
+      .status(201)
+      .json({ message: "File access revoked successfully" });
+  } else {
+    return res.status(201).json({
+      message: "The provided user does not have rights to access this file",
+    });
+  }
+});
+
 const shareFolderController = expressAsyncHandler(async (req, res) => {
   const { folderId, userToShareEmail } = req.body;
 
@@ -61,7 +101,7 @@ const shareFolderController = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "No such folder exists" });
   }
 
-  const folderSharedTo = folder.folderSharedTo
+  const folderSharedTo = folder.folderSharedTo;
   if (!folderSharedTo.includes(userToShareEmail)) {
     const updatedFolderSharedTo = [...folderSharedTo, userToShareEmail];
     await Folder.findByIdAndUpdate(folderId, {
@@ -75,4 +115,8 @@ const shareFolderController = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { shareFileController, shareFolderController };
+module.exports = {
+  shareFileController,
+  shareFolderController,
+  revokeFileAccessController,
+};
