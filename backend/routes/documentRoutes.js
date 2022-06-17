@@ -14,9 +14,11 @@ const {
 } = require("../controllers/fileControllers");
 
 const { multerStorage } = require("../config/multerConfig");
+const { shareFileController } = require("../controllers/shareFileControllers");
 const router = express.Router();
 
 router.route("/create-folder").post(authMiddleware, createFolderController);
+
 router
   .route("/get-folders-in-folder")
   .post(authMiddleware, getFolderController);
@@ -44,5 +46,7 @@ router
 router
   .route("/storage-consumption")
   .post(authMiddleware, getTotalStorageConsumptionController);
+
+router.route("/share").post(authMiddleware, shareFileController);
 
 module.exports = router;

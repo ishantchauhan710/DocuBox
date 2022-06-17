@@ -24,6 +24,10 @@ const fileSchema = mongoose.Schema(
       ref: "User",
       require: true,
     },
+    fileSharedTo: {
+      type: [String],
+      require: true
+    },
     fileDirectory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Folder",

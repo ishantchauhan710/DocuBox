@@ -27,6 +27,7 @@ const createFileController = expressAsyncHandler(async (req, res) => {
   const fileType = file.mimetype;
   const fileSize = file.size;
   const fileOwner = req.user._id;
+  const fileSharedTo = [];
 
   let uploadedFile = await File.create({
     fileName,
@@ -34,6 +35,7 @@ const createFileController = expressAsyncHandler(async (req, res) => {
     fileType,
     fileSize,
     fileOwner,
+    fileSharedTo,
     fileDirectory,
   });
 
