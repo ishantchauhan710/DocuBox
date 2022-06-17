@@ -111,8 +111,35 @@ const searchFilesUsingNameController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const searchFilesUsingTypeController = expressAsyncHandler(async (req, res) => {
+  const { fileTypeQuery } = req.body;
+
+  let fileList = await File.find({
+    $and: [
+      { fileType: { $regex: fileTypeQuery, $options: "i" } },
+      { fileOwner: req.user._id },
+    ],
+  }).populate("fileOwner", "-userPassword");
+
+  if (fileList) {
+    fileList.forEach((fileItem) => {
+      fileItem.fileName = getOriginalFileName(fileItem.fileName);
+    });
+
+    res.status(201).json({
+      fileList: fileList,
+    });
+  } else {
+    res.status(400).json({
+      message: "File not found",
+    });
+    return;
+  }
+});
+
 module.exports = {
   createFileController,
   getFilesInFolderController,
   searchFilesUsingNameController,
+  searchFilesUsingTypeController
 };
