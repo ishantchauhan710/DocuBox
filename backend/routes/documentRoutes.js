@@ -10,6 +10,7 @@ const {
   getFilesInFolderController,
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
+  getTotalStorageConsumptionController,
 } = require("../controllers/fileControllers");
 
 const { multerStorage } = require("../config/multerConfig");
@@ -39,6 +40,12 @@ router
   router
   .route("/search-file-type")
   .post(authMiddleware, searchFilesUsingTypeController);
+
+  router
+  .route("/storage-consumption")
+  .post(authMiddleware, getTotalStorageConsumptionController);
+
+  
 
   
 

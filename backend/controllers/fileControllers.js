@@ -137,9 +137,36 @@ const searchFilesUsingTypeController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const getTotalStorageConsumptionController = expressAsyncHandler(
+  async (req, res) => {
+    let fileList = await File.find({ fileOwner: req.user._id }).populate(
+      "fileOwner",
+      "-userPassword"
+    );
+
+    let size = 0;
+
+    if (fileList) {
+      fileList.forEach((fileItem) => {
+        size += parseInt(fileItem.fileSize);
+      });
+
+      res.status(201).json({
+        storageConsumption: size,
+      });
+    } else {
+      res.status(400).json({
+        message: "File not found",
+      });
+      return;
+    }
+  }
+);
+
 module.exports = {
   createFileController,
   getFilesInFolderController,
   searchFilesUsingNameController,
-  searchFilesUsingTypeController
+  searchFilesUsingTypeController,
+  getTotalStorageConsumptionController
 };
