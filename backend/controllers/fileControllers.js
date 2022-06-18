@@ -92,6 +92,30 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const renameFileController = expressAsyncHandler(async (req, res) => {
+  let { fileId, newName } = req.body;
+
+  if (!fileId) {
+    return res.status(400).json({ message: "FileId cannot be blank" });
+  }
+
+  if (!newName) {
+    return res.status(400).json({ message: "File name cannot be blank" });
+  }
+
+  const file = await File.findById(fileId);
+  if (!file) {
+    return res.status(400).json({ message: "File not found" });
+  }
+
+  try {
+    await File.findByIdAndUpdate(fileId, { fileName: newName });
+    return res.status(201).json({ message: "Success" });
+  } catch (e) {
+    return res.status(400).json({ message: "An unknown error occurred" });
+  }
+});
+
 const searchFilesUsingNameController = expressAsyncHandler(async (req, res) => {
   const { fileNameQuery } = req.body;
 
@@ -173,6 +197,7 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
 module.exports = {
   createFileController,
   getFilesInFolderController,
+  renameFileController,
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
   getTotalStorageConsumptionController,

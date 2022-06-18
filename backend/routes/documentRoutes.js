@@ -13,6 +13,7 @@ const {
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
   getTotalStorageConsumptionController,
+  renameFileController,
 } = require("../controllers/fileControllers");
 
 const {
@@ -72,6 +73,8 @@ router
 router
   .route("/get-files-in-folder")
   .post(authMiddleware, getFilesInFolderController);
+
+router.route("/rename-file").post(authMiddleware, renameFileController);
 
 router
   .route("/search-file-name")
