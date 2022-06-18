@@ -69,7 +69,45 @@ const getFolderController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const deleteFolderController = expressAsyncHandler(async (req, res) => {
+  let { folderId } = req.body;
+
+  const folder = await Folder.findById(folderId);
+
+  if (!folder) {
+    return res.status(400).json({ message: "Folder not found" });
+  }
+
+  // TO BE DONE LATER
+});
+
+const renameFolderController = expressAsyncHandler(async (req, res) => {
+  let { folderId, newName } = req.body;
+
+  if (!folderId) {
+    return res.status(400).json({ message: "FolderId cannot be blank" });
+  }
+
+  if (!newName) {
+    return res.status(400).json({ message: "Folder name cannot be blank" });
+  }
+
+  const folder = await Folder.findById(folderId);
+  if (!folder) {
+    return res.status(400).json({ message: "Folder not found" });
+  }
+
+  try {
+    await Folder.findByIdAndUpdate(folderId, { folderName: newName });
+    return res.status(201).json({ message: "Success" });
+  } catch (e) {
+    return res.status(400).json({ message: "An unknown error occurred" });
+  }
+});
+
 module.exports = {
   createFolderController,
   getFolderController,
+  deleteFolderController,
+  renameFolderController,
 };

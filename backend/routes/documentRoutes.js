@@ -3,6 +3,8 @@ const { authMiddleware } = require("../middlewares/authMiddleware");
 const {
   createFolderController,
   getFolderController,
+  deleteFolderController,
+  renameFolderController,
 } = require("../controllers/folderControllers");
 
 const {
@@ -13,7 +15,6 @@ const {
   getTotalStorageConsumptionController,
 } = require("../controllers/fileControllers");
 
-const { multerStorage } = require("../config/multerConfig");
 const {
   shareFileController,
   revokeFileAccessController,
@@ -28,13 +29,37 @@ const {
   getFoldersSharedByMeController,
 } = require("../controllers/shareFolderControllers");
 
+const { multerStorage } = require("../config/multerConfig");
+
 const router = express.Router();
+
+// **************** FOLDER ROUTES ****************
 
 router.route("/create-folder").post(authMiddleware, createFolderController);
 
 router
   .route("/get-folders-in-folder")
   .post(authMiddleware, getFolderController);
+
+router.route("/delete-folder").post(authMiddleware, deleteFolderController);
+
+router.route("/rename-folder").post(authMiddleware, renameFolderController);
+
+router.route("/share-folder").post(authMiddleware, shareFolderController);
+
+router
+  .route("/revoke-folder")
+  .post(authMiddleware, revokeFolderAccessController);
+
+router
+  .route("/get-folders-shared-to-me")
+  .post(authMiddleware, getFoldersSharedToMeController);
+
+router
+  .route("/get-folders-shared-by-me")
+  .post(authMiddleware, getFoldersSharedByMeController);
+
+// **************** FILE ROUTES ****************
 
 router
   .route("/create-file")
@@ -56,31 +81,22 @@ router
   .route("/search-file-type")
   .post(authMiddleware, searchFilesUsingTypeController);
 
-router
-  .route("/storage-consumption")
-  .post(authMiddleware, getTotalStorageConsumptionController);
-
 router.route("/share-file").post(authMiddleware, shareFileController);
-
-router.route("/share-folder").post(authMiddleware, shareFolderController);
 
 router.route("/revoke-file").post(authMiddleware, revokeFileAccessController);
 
 router
-  .route("/revoke-folder")
-  .post(authMiddleware, revokeFolderAccessController);
+  .route("/get-files-shared-to-me")
+  .post(authMiddleware, getFilesSharedToMeController);
 
+router
+  .route("/get-files-shared-by-me")
+  .post(authMiddleware, getFilesSharedByMeController);
 
-  router.route("/get-files-shared-to-me").post(authMiddleware, getFilesSharedToMeController);
+// **************** OTHER DOCUMENT RELATED ROUTES ****************
 
-  router.route("/get-files-shared-by-me").post(authMiddleware, getFilesSharedByMeController);
-
-  router.route("/get-folders-shared-to-me").post(authMiddleware, getFoldersSharedToMeController);
-
-  router.route("/get-folders-shared-by-me").post(authMiddleware, getFoldersSharedByMeController);
-
-  
-
-
+router
+  .route("/storage-consumption")
+  .post(authMiddleware, getTotalStorageConsumptionController);
 
 module.exports = router;
