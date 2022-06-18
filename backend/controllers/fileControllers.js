@@ -13,12 +13,7 @@ const createFileController = expressAsyncHandler(async (req, res) => {
     return;
   }
 
-  if (!fileDirectory) {
-    res.status(400).json({
-      message: "File directory cannot be blank",
-    });
-    return;
-  }
+
 
   let file = req.files[0];
 

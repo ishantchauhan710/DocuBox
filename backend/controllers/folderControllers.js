@@ -1,4 +1,5 @@
 const expressAsyncHandler = require("express-async-handler");
+const File = require("../models/fileModel.js");
 const Folder = require("../models/folderModel.js");
 
 const createFolderController = expressAsyncHandler(async (req, res) => {
@@ -78,7 +79,16 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Folder not found" });
   }
 
-  // TO BE DONE LATER
+  const foldersToDelete = await Folder.find({
+    $or: [{ _id: folderId }, { folderParentDirectory: { $in: [folderId] } }],
+  });
+
+  const filesToDelete = await File.find({ fileDirectory: { $in: [folderId] } });
+
+  res.status(201).json({
+    foldersToDelete: foldersToDelete,
+    filesToDelete: filesToDelete,
+  });
 });
 
 const renameFolderController = expressAsyncHandler(async (req, res) => {

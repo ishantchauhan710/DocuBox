@@ -31,7 +31,7 @@ const fileSchema = mongoose.Schema(
     fileDirectory: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Folder",
-      require: true,
+      require: false,
     },
   },
   {
