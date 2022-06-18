@@ -1,7 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
 const User = require("../models/userModel.js");
-const { getOriginalFileName } = require("../util/fileUtil.js");
+const { getOriginalFileName, renameFile } = require("../util/fileUtil.js");
 
 const createFileController = expressAsyncHandler(async (req, res) => {
   const { fileDirectory } = req.body;
@@ -108,8 +108,10 @@ const renameFileController = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "File not found" });
   }
 
+  const updatedName = renameFile(file.fileName, newName);
+
   try {
-    await File.findByIdAndUpdate(fileId, { fileName: newName });
+    await File.findByIdAndUpdate(fileId, { fileName: updatedName });
     return res.status(201).json({ message: "Success" });
   } catch (e) {
     return res.status(400).json({ message: "An unknown error occurred" });

@@ -21,4 +21,18 @@ const getOriginalFileName = (fileName) => {
   return originalName;
 };
 
-module.exports = { getUniqueFileName, getOriginalFileName };
+const renameFile = (oldName, newName) => {
+  // Get file extension
+  let oldNameTemp = oldName;
+  let fileExtAry = oldNameTemp.split(".");
+  let fileExt = fileExtAry[fileExtAry.length - 1];
+
+  // Finally rename the file
+  let tempName = oldName;
+  tempName = tempName.split("_");
+  tempName.pop();
+  const updatedName = tempName.join("_") + `_${newName}.${fileExt}`;
+  return updatedName;
+};
+
+module.exports = { getUniqueFileName, getOriginalFileName, renameFile };
