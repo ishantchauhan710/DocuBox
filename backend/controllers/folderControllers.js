@@ -12,7 +12,7 @@ const createFolderController = expressAsyncHandler(async (req, res) => {
   }
 
   if (!folderParentDirectory) {
-    folderParentDirectory = null;
+    folderParentDirectory = [];
   }
 
   const folderOwner = req.user._id;
@@ -27,7 +27,7 @@ const createFolderController = expressAsyncHandler(async (req, res) => {
   });
 
   folder = await folder.populate("folderOwner", "-userPassword");
-  folder = await folder.populate("folderParentDirectory");
+  //folder = await folder.populate("folderParentDirectory");
 
   if (folder) {
     res.status(201).json({

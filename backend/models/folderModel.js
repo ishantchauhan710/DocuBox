@@ -17,7 +17,7 @@ const folderSchema = mongoose.Schema(
       require: true,
     },
     folderParentDirectory: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Folder",
       require: false,
     },

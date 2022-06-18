@@ -40,7 +40,7 @@ const createFileController = expressAsyncHandler(async (req, res) => {
   });
 
   uploadedFile = await uploadedFile.populate("fileOwner", "-userPassword");
-  uploadedFile = await uploadedFile.populate("fileDirectory");
+  //uploadedFile = await uploadedFile.populate("fileDirectory");
 
   // Updated storage consumption in user schema
   const user = await User.findById(req.user._id);
