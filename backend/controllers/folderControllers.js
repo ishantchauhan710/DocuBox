@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
 const Folder = require("../models/folderModel.js");
+const { deleteFileFromStorage } = require("../util/fileUtil.js");
 
 const createFolderController = expressAsyncHandler(async (req, res) => {
   let { folderName, folderParentDirectory } = req.body;
@@ -87,14 +88,32 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
 
   let filesToDeleteFromStorage = [];
   filesToDelete.forEach((fileItem) => {
-    filesToDeleteFromStorage.push(fileItem.fileStorageUrl);
+    filesToDeleteFromStorage.push(fileItem.fileName);
   });
 
-  res.status(201).json({
-    foldersToDelete: foldersToDelete,
-    filesToDelete: filesToDelete,
-    filesToDeleteFromStorage: filesToDeleteFromStorage,
-  });
+  try {
+    filesToDelete.forEach(async (docuboxFile) => {
+      await File.findByIdAndDelete(docuboxFile._id);
+    });
+  
+    foldersToDelete.forEach(async (docuboxFolder) => {
+      await Folder.findByIdAndDelete(docuboxFolder._id);
+    });
+  
+    filesToDeleteFromStorage.forEach(async (docuboxFileOnStorage) => {
+      await deleteFileFromStorage(docuboxFileOnStorage.fileName);
+    });
+  
+    res.status(201).json({
+      message: "Folder deleted successfully!",
+    });
+  } catch(e) {
+    res.status(400).json({
+      message: `Error Deleting Folder: ${e.message}`,
+    });
+  }
+  
+
 });
 
 const renameFolderController = expressAsyncHandler(async (req, res) => {

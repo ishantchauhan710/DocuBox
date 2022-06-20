@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
 const User = require("../models/userModel.js");
+const { getOriginalFileName } = require("../util/fileUtil.js");
 
 const shareFileController = expressAsyncHandler(async (req, res) => {
   const { fileId, userToShareEmail } = req.body;
@@ -98,6 +99,10 @@ const getFilesSharedByMeController = expressAsyncHandler(async (req, res) => {
       { fileSharedTo: { $exists: true, $not: { $size: 0 } } },
     ],
   });
+
+  fileList.forEach((fileItem)=>{
+    fileItem.fileName = getOriginalFileName(fileItem.fileName);
+  })
 
   if (!fileList) {
     res.status(400).json({ message: "No files found" });

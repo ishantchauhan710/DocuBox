@@ -18,8 +18,13 @@ const userSchema = mongoose.Schema(
     },
     userStorageConsumption: {
       type: String,
-      require: true
-    }
+      require: true,
+    },
+    userDataFolder: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Folder",
+      require: false
+    },
   },
   {
     timeStamps: true,
