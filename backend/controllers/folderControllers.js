@@ -85,9 +85,15 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
 
   const filesToDelete = await File.find({ fileDirectory: { $in: [folderId] } });
 
+  let filesToDeleteFromStorage = [];
+  filesToDelete.forEach((fileItem) => {
+    filesToDeleteFromStorage.push(fileItem.fileStorageUrl);
+  });
+
   res.status(201).json({
     foldersToDelete: foldersToDelete,
     filesToDelete: filesToDelete,
+    filesToDeleteFromStorage: filesToDeleteFromStorage,
   });
 });
 
