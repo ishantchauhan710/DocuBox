@@ -14,6 +14,7 @@ const {
   searchFilesUsingTypeController,
   getTotalStorageConsumptionController,
   renameFileController,
+  deleteFileController,
 } = require("../controllers/fileControllers");
 
 const {
@@ -75,6 +76,8 @@ router
   .post(authMiddleware, getFilesInFolderController);
 
 router.route("/rename-file").post(authMiddleware, renameFileController);
+
+router.route("/delete-file").post(authMiddleware, deleteFileController);
 
 router
   .route("/search-file-name")

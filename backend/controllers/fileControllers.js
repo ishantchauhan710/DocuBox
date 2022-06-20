@@ -1,7 +1,11 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
 const User = require("../models/userModel.js");
-const { getOriginalFileName, renameFile } = require("../util/fileUtil.js");
+const {
+  getOriginalFileName,
+  renameFile,
+  deleteFileFromStorage,
+} = require("../util/fileUtil.js");
 
 const createFileController = expressAsyncHandler(async (req, res) => {
   const { fileDirectory } = req.body;
@@ -12,8 +16,6 @@ const createFileController = expressAsyncHandler(async (req, res) => {
     });
     return;
   }
-
-
 
   let file = req.files[0];
 
@@ -113,6 +115,31 @@ const renameFileController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const deleteFileController = expressAsyncHandler(async (req, res) => {
+  let { fileId } = req.body;
+
+  if (!fileId) {
+    return res.status(400).json({ message: "FileId cannot be null" });
+  }
+
+  const file = await File.findById(fileId);
+
+  if (!file) {
+    return res.status(400).json({ message: "File not found" });
+  }
+
+  await File.findByIdAndDelete(file._id);
+  console.log("File Deleted From Database");
+  const result = await deleteFileFromStorage(file.fileName);
+
+  if (result) {
+    console.log("File Deleted From Cloud Storage");
+    return res.status(201).json({ message: "File deleted successfully" });
+  } else {
+    return res.status(404).json({ message: "Error deleting file" });
+  }
+});
+
 const searchFilesUsingNameController = expressAsyncHandler(async (req, res) => {
   const { fileNameQuery } = req.body;
 
@@ -195,6 +222,7 @@ module.exports = {
   createFileController,
   getFilesInFolderController,
   renameFileController,
+  deleteFileController,
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
   getTotalStorageConsumptionController,

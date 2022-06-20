@@ -1,4 +1,31 @@
 const crypto = require("crypto");
+const aws = require("aws-sdk");
+
+const deleteFileFromStorage = async (storageFileName) => {
+  aws.config.update({
+    accessKeyId: process.env.STORAGE_ACCESS_KEY,
+    secretAccessKey: process.env.STORAGE_SECRET_KEY,
+    region: process.env.STORAGE_REGION,
+  });
+  const s3 = new aws.S3();
+
+  const params = {
+    Bucket: process.env.STORAGE_BUCKET,
+    Key: storageFileName,
+  };
+
+  try {
+    await s3.headObject(params).promise();
+    try {
+      await s3.deleteObject(params).promise();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
 
 const getUniqueFileName = (fileName) => {
   // Format: millis_randomUUID_img.jpg
@@ -35,4 +62,9 @@ const renameFile = (oldName, newName) => {
   return updatedName;
 };
 
-module.exports = { getUniqueFileName, getOriginalFileName, renameFile };
+module.exports = {
+  deleteFileFromStorage,
+  getUniqueFileName,
+  getOriginalFileName,
+  renameFile,
+};
