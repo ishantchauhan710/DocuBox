@@ -85,6 +85,11 @@ const getFilesSharedToMeController = expressAsyncHandler(async (req, res) => {
 
   const fileList = await File.find({ fileSharedTo: { $in: [myEmail] } });
 
+
+  fileList.forEach((fileItem)=>{
+    fileItem.fileName = getOriginalFileName(fileItem.fileName);
+  })
+
   if (!fileList) {
     res.status(400).json({ message: "No files found" });
   } else {
