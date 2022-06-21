@@ -98,6 +98,7 @@ const loginUserController = expressAsyncHandler(async (req, res) => {
         _id: dbUser._id,
         userName: dbUser.userName,
         userEmail: dbUser.userEmail,
+        userDataFolder: dbUser.userDataFolder,
         token: generateToken(dbUser._id),
       });
     } else {
