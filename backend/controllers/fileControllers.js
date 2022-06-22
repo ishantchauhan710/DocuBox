@@ -76,6 +76,7 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   if (fileList) {
     fileList.forEach((fileItem) => {
       fileItem.fileName = getOriginalFileName(fileItem.fileName);
+      fileItem.fileSize = fileItem.fileSize / (1024 * 1024)
     });
 
     res.status(201).json({
@@ -211,12 +212,44 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
     } else {
       // Return storage conmsumption in megabytes (Mb)
       const storageConsumption = (
-        user.userStorageConsumption / 1000000
+        user.userStorageConsumption / (1024 * 1024)
       ).toFixed(2);
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
 );
+
+const viewFileController = expressAsyncHandler(async (req, res) => {
+  let { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "FileId cannot be null" });
+  }
+
+  const file = await File.findById(id);
+
+  if (!file) {
+    return res.status(400).json({ message: "File not found" });
+  }
+
+  var documentDetails = {
+    fileName: file.fileName,
+    fileSize: file.fileSize,
+    fileStorageUrl: file.fileStorageUrl,
+  };
+
+  if (file.fileType.includes("image")) {
+    res.render("image.ejs", documentDetails);
+  } else if (file.fileType.includes("video")) {
+    res.render("video.ejs", documentDetails);
+  } else if (file.fileType.includes("audio")) {
+    res.render("image.ejs", documentDetails);
+  } else if (file.fileType.includes("pdf")) {
+    res.render("pdf.ejs", documentDetails);
+  } else {
+    res.render("error.ejs", documentDetails);
+  }
+});
 
 module.exports = {
   createFileController,
@@ -226,4 +259,5 @@ module.exports = {
   searchFilesUsingNameController,
   searchFilesUsingTypeController,
   getTotalStorageConsumptionController,
+  viewFileController,
 };

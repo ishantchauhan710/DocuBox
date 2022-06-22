@@ -15,6 +15,7 @@ const {
   getTotalStorageConsumptionController,
   renameFileController,
   deleteFileController,
+  viewFileController,
 } = require("../controllers/fileControllers");
 
 const {
@@ -98,6 +99,8 @@ router
 router
   .route("/get-files-shared-by-me")
   .post(authMiddleware, getFilesSharedByMeController);
+
+router.route("/file/:id").get(viewFileController);
 
 // **************** OTHER DOCUMENT RELATED ROUTES ****************
 
