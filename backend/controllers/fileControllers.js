@@ -5,6 +5,7 @@ const {
   getOriginalFileName,
   renameFile,
   deleteFileFromStorage,
+  convertFromBytesToMb,
 } = require("../util/fileUtil.js");
 
 const createFileController = expressAsyncHandler(async (req, res) => {
@@ -76,7 +77,7 @@ const getFilesInFolderController = expressAsyncHandler(async (req, res) => {
   if (fileList) {
     fileList.forEach((fileItem) => {
       fileItem.fileName = getOriginalFileName(fileItem.fileName);
-      fileItem.fileSize = fileItem.fileSize / (1024 * 1024)
+      fileItem.fileSize = convertFromBytesToMb(fileItem.fileSize);
     });
 
     res.status(201).json({
@@ -211,9 +212,7 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
       return res.status(400).json({ message: "No user found" });
     } else {
       // Return storage conmsumption in megabytes (Mb)
-      const storageConsumption = (
-        user.userStorageConsumption / (1024 * 1024)
-      ).toFixed(2);
+      const storageConsumption = convertFromBytesToMb(user.userStorageConsumption);
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }

@@ -29,8 +29,7 @@ const multerStorage = multer({
       console.log(file);
       cb(null, getUniqueFileName(file.originalname));
     },
-  }),
-  limits: { fileSize: (1024*1024) }
+  })
 });
 
 module.exports = { multerStorage };

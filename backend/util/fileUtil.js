@@ -62,9 +62,14 @@ const renameFile = (oldName, newName) => {
   return updatedName;
 };
 
+const convertFromBytesToMb = (size) => {
+  return `${(size/(1024*1024)).toFixed(2)} Mb`
+}
+
 module.exports = {
   deleteFileFromStorage,
   getUniqueFileName,
   getOriginalFileName,
   renameFile,
+  convertFromBytesToMb
 };
