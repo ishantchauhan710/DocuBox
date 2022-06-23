@@ -11,6 +11,10 @@ const {
 const createFileController = expressAsyncHandler(async (req, res) => {
   const { fileDirectory } = req.body;
 
+  if(req.user.userStorageConsumption>=50*1024*1024) {
+    return res.json({message: "Unable to upload file, no space left"})
+  }
+
   if (!req.files) {
     res.status(400).json({
       message: "File data cannot be blank",
