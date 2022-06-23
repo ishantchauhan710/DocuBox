@@ -87,6 +87,7 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
   const filesToDelete = await File.find({ fileDirectory: { $in: [folderId] } });
 
   let storageToClear = 0;
+  const folderOwner = folder.folderOwner
 
   let filesToDeleteFromStorage = [];
   filesToDelete.forEach((fileItem) => {
@@ -107,12 +108,12 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
       await deleteFileFromStorage(docuboxFileOnStorage.fileName);
     });
 
-    const fileOwner = await User.findById(req.user._id);
+    const fileOwner = await User.findById(folderOwner);
     const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
     const updatedFileOwnerStorageConsumption =
       fileOwnerStorageConsumption - storageToClear;
 
-    await User.findByIdAndUpdate(req.user._idr, {
+    await User.findByIdAndUpdate(folderOwner, {
       userStorageConsumption: updatedFileOwnerStorageConsumption,
     });
 
