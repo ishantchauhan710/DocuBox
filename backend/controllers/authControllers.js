@@ -38,14 +38,14 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
 
   const userStorageConsumption = "0";
 
-  const userDataFolderTempValue = null; // Initially set user data folder to null
+  let userDataFolder = null; // Initially set user data folder to null
 
   const user = await User.create({
     userName,
     userEmail,
     userPassword,
     userStorageConsumption,
-    userDataFolderTempValue,
+    userDataFolder,
   });
 
   if (user) {
@@ -56,17 +56,30 @@ const signupUserController = expressAsyncHandler(async (req, res) => {
       folderParentDirectory: [],
     });
 
-    user.userDataFolder = userFolder._id;
+    if (userFolder) {
+      await User.findByIdAndUpdate(user._id, {
+        userDataFolder: userFolder._id,
+      });
 
-    await User.findByIdAndUpdate(user._id, { user });
+      const updatedUser = await User.findById(user._id);
 
-    res.status(201).json({
-      _id: user._id,
-      userName: user.userName,
-      userEmail: user.userEmail,
-      userDataFolder: user.userDataFolder,
-      token: generateToken(user._id),
-    });
+      res.status(201).json({
+        _id: updatedUser._id,
+        userName: updatedUser.userName,
+        userEmail: updatedUser.userEmail,
+        userDataFolder: updatedUser.userDataFolder,
+        token: generateToken(updatedUser._id),
+      });
+
+    } else {
+      res
+        .status(400)
+        .json({
+          message:
+            "An unknown error occurred while creating directory for user",
+        });
+      return;
+    }
   } else {
     res.status(400).json({ message: "An unknown error occurred" });
     return;
