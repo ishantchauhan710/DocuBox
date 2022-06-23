@@ -162,6 +162,7 @@ const searchFilesUsingNameController = expressAsyncHandler(async (req, res) => {
     fileList.forEach((fileItem) => {
       // Convert the filename to its original form
       fileItem.fileName = getOriginalFileName(fileItem.fileName);
+      fileItem.fileSize = convertFromBytesToMb(fileItem.fileSize);
 
       if (fileItem.fileName.includes(fileNameQuery)) {
         filteredFileList.push(fileItem);
@@ -192,6 +193,7 @@ const searchFilesUsingTypeController = expressAsyncHandler(async (req, res) => {
   if (fileList) {
     fileList.forEach((fileItem) => {
       fileItem.fileName = getOriginalFileName(fileItem.fileName);
+      fileItem.fileSize = convertFromBytesToMb(fileItem.fileSize);
     });
 
     res.status(201).json({
@@ -211,8 +213,7 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
     if (!user) {
       return res.status(400).json({ message: "No user found" });
     } else {
-      // Return storage conmsumption in megabytes (Mb)
-      const storageConsumption = convertFromBytesToMb(user.userStorageConsumption);
+      const storageConsumption = user.userStorageConsumption
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
@@ -242,9 +243,7 @@ const viewFileController = expressAsyncHandler(async (req, res) => {
   } else if (file.fileType.includes("video")) {
     res.render("video.ejs", documentDetails);
   } else if (file.fileType.includes("audio")) {
-    res.render("image.ejs", documentDetails);
-  } else if (file.fileType.includes("pdf")) {
-    res.render("pdf.ejs", documentDetails);
+    res.render("audio.ejs", documentDetails);
   } else {
     res.render("error.ejs", documentDetails);
   }
