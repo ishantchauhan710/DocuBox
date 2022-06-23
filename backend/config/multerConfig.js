@@ -29,7 +29,13 @@ const multerStorage = multer({
       console.log(file);
       cb(null, getUniqueFileName(file.originalname));
     },
-  })
+    limits: { fileSize: 50 * 1024 * 1024 }, 
+    onFileUploadStart: function (file, req, res) {
+      if(req.files[0].size>=5*1024*1024) {
+        return res.json({message: "Unable to upload file, no space left"});
+      }
+    },
+  }),
 });
 
 module.exports = { multerStorage };

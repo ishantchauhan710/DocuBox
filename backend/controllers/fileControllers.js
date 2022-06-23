@@ -213,42 +213,39 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
     if (!user) {
       return res.status(400).json({ message: "No user found" });
     } else {
-      const storageConsumption = (
-        user.userStorageConsumption /
-        (1024 * 1024)
-      ).toFixed(2);
+      const storageConsumption = ((user.userStorageConsumption)/(1024*1024)).toFixed(2)
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
 );
 
 const viewFileController = expressAsyncHandler(async (req, res) => {
-  let { documentUrl } = req.params;
+  const { id } = req.body;
 
-  const fileType = url.split(/[#?]/)[0].split(".").pop().trim();
+  if (!id) {
+    return res.status(400).json({ message: "FileId cannot be null" });
+  }
 
-  const imageFormats = ["jpg", "jpeg", "png", "svg", "bmp", "gif"];
-  const videoFormats = ["mp4", "mpeg", "avi", "3gp"];
-  const audioFormats = ["mp3", "ogg"];
+  const file = await File.findById(id);
+
+  if (!file) {
+    return res.status(400).json({ message: "File not found" });
+  }
 
   var documentDetails = {
-    fileStorageUrl: documentUrl,
+    fileName: file.fileName,
+    fileSize: file.fileSize,
+    fileStorageUrl: file.fileStorageUrl,
   };
 
-  console.log("File:",fileType)
-
-  if (imageFormats.includes(fileType)) {
+  if (file.fileType.includes("image")) {
     res.render("image.ejs", documentDetails);
-    console.log("Image")
-  } else if (videoFormats.includes(fileType)) {
+  } else if (file.fileType.includes("video")) {
     res.render("video.ejs", documentDetails);
-    console.log("Video")
-  } else if (audioFormats.includes(fileType)) {
+  } else if (file.fileType.includes("audio")) {
     res.render("audio.ejs", documentDetails);
-    console.log("Audio")
   } else {
     res.render("error.ejs", documentDetails);
-    console.log("File")
   }
 });
 
