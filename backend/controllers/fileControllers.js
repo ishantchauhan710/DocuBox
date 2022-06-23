@@ -237,7 +237,7 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
 );
 
 const viewFileController = expressAsyncHandler(async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   if (!id) {
     return res.status(400).json({ message: "FileId cannot be null" });
