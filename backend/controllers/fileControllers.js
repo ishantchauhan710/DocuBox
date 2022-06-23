@@ -251,7 +251,7 @@ const viewFileController = expressAsyncHandler(async (req, res) => {
 
   let url = file.fileStorageUrl;
   if (file.fileStorageUrl.startsWith("ap-")) {
-    url = `"https://${url}`;
+    url = `https://${url}`;
   }
 
   var documentDetails = {
