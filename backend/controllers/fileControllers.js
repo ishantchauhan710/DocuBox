@@ -235,14 +235,20 @@ const viewFileController = expressAsyncHandler(async (req, res) => {
     fileStorageUrl: documentUrl,
   };
 
+  console.log("File:",fileType)
+
   if (imageFormats.includes(fileType)) {
     res.render("image.ejs", documentDetails);
+    console.log("Image")
   } else if (videoFormats.includes(fileType)) {
     res.render("video.ejs", documentDetails);
+    console.log("Video")
   } else if (audioFormats.includes(fileType)) {
     res.render("audio.ejs", documentDetails);
+    console.log("Audio")
   } else {
     res.render("error.ejs", documentDetails);
+    console.log("File")
   }
 });
 
