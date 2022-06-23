@@ -140,7 +140,7 @@ const deleteFileController = expressAsyncHandler(async (req, res) => {
   const fileOwner = await User.findById(file.fileOwner);
   const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
   const updatedFileOwnerStorageConsumption =
-    parseInt(fileOwnerStorageConsumption) - parseInt(file.fileSize)
+    parseInt(fileOwnerStorageConsumption) - parseInt(file.fileSize);
 
   await User.findByIdAndUpdate(file.fileOwner, {
     userStorageConsumption: updatedFileOwnerStorageConsumption,
@@ -249,10 +249,15 @@ const viewFileController = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "File not found" });
   }
 
+  let url = file.fileStorageUrl;
+  if (file.fileStorageUrl.startsWith("ap-")) {
+    url = `"https://${url}`;
+  }
+
   var documentDetails = {
     fileName: file.fileName,
     fileSize: file.fileSize,
-    fileStorageUrl: file.fileStorageUrl,
+    fileStorageUrl: url,
   };
 
   if (file.fileType.includes("image")) {
