@@ -31,7 +31,7 @@ const folderSchema = mongoose.Schema(
 folderSchema.plugin(encrypt, {
   encryptionKey: process.env.ENCRYPTION_KEY,
   signingKey: process.env.SIGNATURE_KEY,
-  encryptedFields: ["folderOwner", "folderParentDirectory"],
+  encryptedFields: ["folderOwner"],
 });
 
 const Folder = mongoose.model("Folder", folderSchema);
