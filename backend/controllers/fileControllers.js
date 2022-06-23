@@ -213,7 +213,7 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
     if (!user) {
       return res.status(400).json({ message: "No user found" });
     } else {
-      const storageConsumption = user.userStorageConsumption
+      const storageConsumption = (user.userStorageConsumption)/(1024*1024).toFixed(2)
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
