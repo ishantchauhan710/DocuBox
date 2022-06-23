@@ -11,8 +11,8 @@ const {
 const createFileController = expressAsyncHandler(async (req, res) => {
   const { fileDirectory } = req.body;
 
-  if(req.user.userStorageConsumption>=50*1024*1024) {
-    return res.json({message: "Unable to upload file, no space left"})
+  if (req.user.userStorageConsumption >= 50 * 1024 * 1024) {
+    return res.json({ message: "Unable to upload file, no space left" });
   }
 
   if (!req.files) {
@@ -136,6 +136,16 @@ const deleteFileController = expressAsyncHandler(async (req, res) => {
 
   await File.findByIdAndDelete(file._id);
   console.log("File Deleted From Database");
+
+  const fileOwner = await User.findById(file.fileOwner);
+  const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
+  const updatedFileOwnerStorageConsumption =
+    fileOwner.userStorageConsumption - file.fileSize;
+
+  await User.findByIdAndUpdate(file.fileOwner, {
+    userStorageConsumption: updatedFileOwnerStorageConsumption,
+  });
+
   const result = await deleteFileFromStorage(file.fileName);
 
   if (result) {
@@ -217,7 +227,10 @@ const getTotalStorageConsumptionController = expressAsyncHandler(
     if (!user) {
       return res.status(400).json({ message: "No user found" });
     } else {
-      const storageConsumption = ((user.userStorageConsumption)/(1024*1024)).toFixed(2)
+      const storageConsumption = (
+        user.userStorageConsumption /
+        (1024 * 1024)
+      ).toFixed(2);
       return res.status(201).json({ storageConsumption: storageConsumption });
     }
   }
