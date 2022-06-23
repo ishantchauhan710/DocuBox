@@ -31,7 +31,8 @@ const multerStorage = multer({
     },
     limits: { fileSize: 50 * 1024 * 1024 }, 
     onFileUploadStart: function (file, req, res) {
-      if(req.files[0].size>=5*1024*1024) {
+      if(file.size>=50*1024*1024) {
+        console.log("File upload canceled")
         return res.json({message: "Unable to upload file, no space left"});
       }
     },
