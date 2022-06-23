@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+var encrypt = require("mongoose-encryption");
 
 // Folder database object's structural representation
 const folderSchema = mongoose.Schema(
@@ -26,6 +27,12 @@ const folderSchema = mongoose.Schema(
     timeStamps: true,
   }
 );
+
+folderSchema.plugin(encrypt, {
+  encryptionKey: process.env.ENCRYPTION_KEY,
+  signingKey: process.env.SIGNATURE_KEY,
+  encryptedFields: ["folderOwner", "folderParentDirectory"],
+});
 
 const Folder = mongoose.model("Folder", folderSchema);
 module.exports = Folder;

@@ -1,5 +1,9 @@
 const express = require("express");
+
+// Enable environmental variable processing
 const dotenv = require("dotenv");
+dotenv.config();
+
 const connectToDatabase = require("./config/db");
 const path = require("path");
 const app = express();
@@ -11,9 +15,6 @@ const {
   notFoundMiddleware,
   errorHandlerMiddleware,
 } = require("./middlewares/errorMiddleware");
-
-// Enable environmental variable processing
-dotenv.config();
 
 // Enable JSON response processing
 app.use(express.json());
