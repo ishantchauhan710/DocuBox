@@ -86,34 +86,44 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
 
   const filesToDelete = await File.find({ fileDirectory: { $in: [folderId] } });
 
+  let storageToClear = 0;
+
   let filesToDeleteFromStorage = [];
   filesToDelete.forEach((fileItem) => {
     filesToDeleteFromStorage.push(fileItem.fileName);
+    storageToClear += fileItem.fileSize;
   });
 
   try {
     filesToDelete.forEach(async (docuboxFile) => {
       await File.findByIdAndDelete(docuboxFile._id);
     });
-  
+
     foldersToDelete.forEach(async (docuboxFolder) => {
       await Folder.findByIdAndDelete(docuboxFolder._id);
     });
-  
+
     filesToDeleteFromStorage.forEach(async (docuboxFileOnStorage) => {
       await deleteFileFromStorage(docuboxFileOnStorage.fileName);
     });
-  
+
+    const fileOwner = await User.findById(req.user._id);
+    const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
+    const updatedFileOwnerStorageConsumption =
+      fileOwnerStorageConsumption - storageToClear;
+
+    await User.findByIdAndUpdate(req.user._idr, {
+      userStorageConsumption: updatedFileOwnerStorageConsumption,
+    });
+
     res.status(201).json({
       message: "Folder deleted successfully!",
     });
-  } catch(e) {
+  } catch (e) {
     res.status(400).json({
       message: `Error Deleting Folder: ${e.message}`,
     });
   }
-  
-
 });
 
 const renameFolderController = expressAsyncHandler(async (req, res) => {
