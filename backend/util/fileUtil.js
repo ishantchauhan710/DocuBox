@@ -56,20 +56,20 @@ const renameFile = (oldName, newName) => {
 
   // Finally rename the file
   let tempName = oldName;
-  tempName = tempName.split("_");
-  tempName.pop();
-  const updatedName = tempName.join("_") + `_${newName}.${fileExt}`;
+  tempNameAry = tempName.split("_");
+  tempNameData = `${tempNameAry[0]}_${tempNameAry[1]}`;
+  const updatedName = tempNameData + `_${newName}.${fileExt}`;
   return updatedName;
 };
 
 const convertFromBytesToMb = (size) => {
-  return `${(size/(1024*1024)).toFixed(2)} Mb`
-}
+  return `${(size / (1024 * 1024)).toFixed(2)} Mb`;
+};
 
 module.exports = {
   deleteFileFromStorage,
   getUniqueFileName,
   getOriginalFileName,
   renameFile,
-  convertFromBytesToMb
+  convertFromBytesToMb,
 };
