@@ -93,7 +93,7 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
   let filesToDeleteFromStorage = [];
   filesToDelete.forEach((fileItem) => {
     filesToDeleteFromStorage.push(fileItem.fileName);
-    storageToClear += fileItem.fileSize;
+    storageToClear += parseInt(fileItem.fileSize);
   });
 
   try {
@@ -111,8 +111,7 @@ const deleteFolderController = expressAsyncHandler(async (req, res) => {
 
     const fileOwner = await User.findById(folderOwner);
     const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
-    const updatedFileOwnerStorageConsumption =
-      fileOwnerStorageConsumption - storageToClear;
+    const updatedFileOwnerStorageConsumption = parseInt(fileOwnerStorageConsumption) - parseInt(storageToClear);
 
     await User.findByIdAndUpdate(folderOwner, {
       userStorageConsumption: updatedFileOwnerStorageConsumption,

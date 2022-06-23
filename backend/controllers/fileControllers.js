@@ -140,7 +140,7 @@ const deleteFileController = expressAsyncHandler(async (req, res) => {
   const fileOwner = await User.findById(file.fileOwner);
   const fileOwnerStorageConsumption = fileOwner.userStorageConsumption;
   const updatedFileOwnerStorageConsumption =
-    fileOwnerStorageConsumption - file.fileSize;
+    parseInt(fileOwnerStorageConsumption) - parseInt(file.fileSize)
 
   await User.findByIdAndUpdate(file.fileOwner, {
     userStorageConsumption: updatedFileOwnerStorageConsumption,
