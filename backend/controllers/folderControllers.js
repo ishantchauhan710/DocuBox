@@ -1,6 +1,7 @@
 const expressAsyncHandler = require("express-async-handler");
 const File = require("../models/fileModel.js");
 const Folder = require("../models/folderModel.js");
+const User = require("../models/userModel.js");
 const { deleteFileFromStorage } = require("../util/fileUtil.js");
 
 const createFolderController = expressAsyncHandler(async (req, res) => {
