@@ -43,7 +43,7 @@ const fileSchema = mongoose.Schema(
 fileSchema.plugin(encrypt, {
   encryptionKey: process.env.ENCRYPTION_KEY,
   signingKey: process.env.SIGNATURE_KEY,
-  encryptedFields: ["fileStorageUrl", "fileOwner", "fileDirectory"],
+  encryptedFields: ["fileStorageUrl"],
 });
 
 const File = mongoose.model("File", fileSchema);
