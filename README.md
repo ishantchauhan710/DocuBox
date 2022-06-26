@@ -1,6 +1,6 @@
 # **DocuBox** 
 
-**DocuBox** is a cloud based file storing android app where you can securely store and access your documents from anywhere around the world!
+**DocuBox** is a cloud based file storing app where you can securely store and access your documents from anywhere around the world!
 
 # Application Install
 
@@ -10,37 +10,49 @@
 
 ## About
 
-Using DocuBox, one can create an account, upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
+DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
+
+### App Features
+
+- **User Authentication** - Supports email based authentication
+- **File Uploading** - You can upload your files on DocuBox and access it from anywhere around the world.
+- **File Encryption** - Files stored on DocuBox are stored in encrypted format, so your privacy remains protected.
+- **File Sharing** - You can share the access of your files with other users.
+- **File Management** - You can create multiple folders to organize your files in the way you want.
+- **File Download** - You can download your files and save them locally for offline usage.
+- **File Search** - Enhanced file searching which can give results quickly.
 
 ### Technical details
 
-- The frontend of DocuBox is an android app which is written using Kotlin. It follows MVVM architecture, SOLID and MAD principles, and other best practices for clean and scalable code. To learn more about the android part of this app, you can refer to the Android Repository of DocuBox
+- The frontend of DocuBox is an android app which is written using Kotlin. It follows MVVM architecture, SOLID and MAD principles, and other best practices for clean and scalable code.
 
 - The backend of DocuBox is built using the power of Nodejs, Expressjs and MongoDb! It follows MVC architecture, DRY code principles and uses EJS as a templating engine. Currently, the backend part is deployed on Linode, which is a popular cloud service provider platform for deploying your backend and database!
 
+## 📸 Screenshots 
+
+|   |   |   |
+|---|---|---|
+|![](screenshots/getting_started.jpg)| ![](screenshots/login.jpg) | ![](screenshots/register.jpg)
+|![](screenshots/home.jpg) | ![](screenshots/document.jpg) |![](screenshots/shared_to_me.jpg) 
+|![](screenshots/shared_by_you.jpg)|![](screenshots/profile.jpg) | ![](screenshots/about_us.jpg)
+|![](screenshots/videos.jpg) | ![](screenshots/documents_2.jpg) | ![](screenshots/splash.jpg)
+
+
 ## Setup [Android App]
-- Clone the [Android Repository](https://github.com/ishantchauhan710/DocuBox) of DocuBox on your computer.
-- Create Secrets.kt file in app/src/main/java/com/docubox/util folder and there, write:
-
-```kotlin
-const val BASE_URL = "http://[your server url]/api/"
-```
-[your server url] is the url where your backend is deployed. You can get it from your cloud hosting provider platform like Linode, Digital Ocean or Amazon Web Services.
-
+For this, you can refer to the Android Repository of DocuBox to setup the android part of DocuBox
 
 ## Setup [Backend]
-To setup this project, you will need a cloud hosting service provider like Linode, Digital Ocean or Amazon Web Services. Once you get the account, you need to configure a server where your backend will run on. For this project, I have used an ubuntu server however, you can go with any server you are comfortable with. Once you are done with this, follow the following steps to setup the backend of this project!
+To setup the backend of this project, you will need a cloud hosting service provider like Linode, Digital Ocean or Amazon Web Services. Once you get the account, you need to configure a server where your backend will run on. For this project, I have used an ubuntu server however, you can go with any server you are comfortable with. Once you are done with this, follow the following steps to setup the backend of this project!
 
-1. Install the following tools on your server: nodejs, npm, git, ufw, mongodb.
-2. Once done, open the ports for http and https on your server. You can use ufw tool to do so.
-3. Start the mongodb service and also check its status
-4. Create an object storage on your hosting account named "docubox"
-5. Clone this repository on your server
+1. Install the following tools on your server: nodejs, npm, git, ufw, mongodb
 
-```
-git clone https://github.com/ishantchauhan710/DocuBox
-```
-6. In the root folder of the repository, create a file named ".env" and there, write:
+2. Configure the object storage provided by your hosting provider.
+
+3. Open the http and https port on your server using ufw
+
+4. Clone this repository and navigate to the root folder
+
+5. Create a file named ".env" and there, write:
 
 ```
 MONGO_URL=mongodb://127.0.0.1:27017/docubox
@@ -57,50 +69,22 @@ SIGNATURE_KEY=XXXXXXXX
 
 - Here, MONGO_URL is the url where your mongodb service will run on. Since we will be running it on the server itself and our nodejs server will communicate using it, we have assigned the localhost url to the MONGO_URL variable
 
-- Assign any value to the PORT. It is the port on which your nodejs server will run on.
+- Assign any value to the PORT. It is the port on which your nodejs server will run on
 
-- JWT_SECRET is the secret variable that will be used to encrypt the user passwords. You can assign it with any value you want.
+- JWT_SECRET is the secret variable that will be used to encrypt the user passwords. You can assign it with any value you want
 
-- STORAGE_ACCESS_KEY, STORAGE_SECRET_KEY, STORAGE_BUCKET, STORAGE_REGION and STORAGE_URL are the variables that refer to the object storage of your hosting. An object storage is the place where the actual files of the users will get stored. You can easily get their values by refering to your hosting provider's manual.
+- STORAGE_ACCESS_KEY, STORAGE_SECRET_KEY, STORAGE_BUCKET, STORAGE_REGION and STORAGE_URL are the variables that refer to the object storage of your hosting. An object storage is the place where the actual files of the users will get stored. You can easily get their values by refering to your hosting provider's manual
 
-- ENCRYPTION_KEY will be used to encrypt the files of the user. You can use a base 64 generator and assign it with any 32 bytes base64 value.
+- ENCRYPTION_KEY will be used to encrypt the files of the user. You can use a base 64 generator and assign it with any 32 bytes base64 value
 
-- SIGNATURE_KEY will be used to sign the encryption key. In encryption, a signature is a proof that the user has the private key which matches with some public key. You can use a base 64 generator and assign it with any 64 bytes base64 value.
+- SIGNATURE_KEY will be used to sign the encryption key. In encryption, a signature is a proof that the user has the private key which matches with some public key. You can use a base 64 generator and assign it with any 64 bytes base64 value
 
-7. Once done, in terminal, install all the essential nodejs packages mentioned in package.json file using the following commpand:
+6. Now, you need to somehow enable the your linux server to listen to the http/https requests and transfer them to your nodejs server's port. You can use a reverse proxy or any tool like nginx or apache to do so. However, for testing, you can simply open your nodejs port publically using ufw and make requests to that port!
 
-```
-npm install
-```
+7. Install all the required packages to run the nodejs backend by writing "npm install" command in the root folder
 
-8. Lastly, you need to somehow enable the your linux server to listen to the http/https requests and transfer them to your nodejs server's port. You can use a reverse proxy or any tool like nginx or apache to do so. However, for testing, you can simply open your nodejs port publically using ufw and make requests to that port!
+8. Finally start the nodejs backend server using "npm start" command 
 
-9. And then, you can finally start the nodejs server using the following command:
-```
-npm start
-```
-10. Check the terminal to ensure if the nodejs server is running fine. You can then make use of any tool like POSTMAN to test the API requests!
-
-
-
-### App Features
-
-- **User Authentication** - Supports email based authentication
-- **Saving Files** - You can upload your files to DocuBox's cloud storage and access it anywhere.
-- **File Encryption** - Files stored on DocuBox is secure and encrypted, so your data is securely stored.
-- **Sharing File Access** - You can share view access of your files to other users.
-- **File Management** - You can create multiple folders to organize your storage just as you want it.
-- **File Download** - You can even download your files and save them locally for offline access.
-- **Enhanced File Search** - Super fast file searching which can search files instantly.
-
-## 📸 Screenshots 
-
-|   |   |   |
-|---|---|---|
-|![](screenshots/getting_started.jpg)| ![](screenshots/login.jpg) | ![](screenshots/register.jpg)
-|![](screenshots/home.jpg) | ![](screenshots/document.jpg) |![](screenshots/shared_to_me.jpg) 
-|![](screenshots/shared_by_you.jpg)|![](screenshots/profile.jpg) | ![](screenshots/about_us.jpg)
-|![](screenshots/videos.jpg) | ![](screenshots/documents_2.jpg) | ![](screenshots/splash.jpg)
 
 ### Insights into the app 🔎
 
