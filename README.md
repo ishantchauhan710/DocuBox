@@ -16,11 +16,6 @@
 
 DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
 
-### Insights into the app 🔎
-
-![](graphics/graphicC.png)
-![](graphics/graphicD.png)
-
 
 ### App Features
 
@@ -42,10 +37,10 @@ DocuBox is an open source cloud file storing app. One can upload their files, vi
 
 |   |   |   |
 |---|---|---|
-|![](screenshots/getting_started.jpg)| ![](screenshots/login.jpg) | ![](screenshots/register.jpg)
-|![](screenshots/home.jpg) | ![](screenshots/document.jpg) |![](screenshots/shared_to_me.jpg) 
-|![](screenshots/shared_by_you.jpg)|![](screenshots/profile.jpg) | ![](screenshots/about_us.jpg)
-|![](screenshots/videos.jpg) | ![](screenshots/documents_2.jpg) | ![](screenshots/splash.jpg)
+|![](graphics/screenshots/getting_started.jpg)| ![](graphics/screenshots/login.jpg) | ![](graphics/screenshots/register.jpg)
+|![](graphics/screenshots/home.jpg) | ![](graphics/screenshots/document.jpg) |![](graphics/screenshots/shared_to_me.jpg) 
+|![](graphics/screenshots/shared_by_you.jpg)|![](graphics/screenshots/profile.jpg) | ![](graphics/screenshots/about_us.jpg)
+|![](graphics/screenshots/videos.jpg) | ![](graphics/screenshots/documents_2.jpg) | ![](graphics/screenshots/splash.jpg)
 
 
 ## Setup [Android App]
@@ -96,7 +91,10 @@ SIGNATURE_KEY=XXXXXXXX
 8. Finally start the nodejs backend server using "npm start" command 
 
 
+<img src="graphics/linode.png" style="width: 100%;" />
+
 ## Built With [Backend] 🛠
+* [Linode](www.linode.com) - Linode is a popular cloud hosting service provider where you can deploy your backend
 * [NodeJS](https://nodejs.org/en/about/) - NodeJS is something that allows you to write javascript code on a server! Traditionally, javascript was only available for frontend design purpose however, with NodeJS, you can use javascript for backend purpose too!
 * [ExpressJS](https://expressjs.com/) - ExpressJS is a framework that drastically reduces the amount of backend code we write in NodeJS. It is highly flexible and makes things a lot easier!
 * [MongoDB](https://www.mongodb.com/) - MongoDB is a NoSQL Database that unlike SQL, stores data in form of collections!
@@ -105,6 +103,10 @@ SIGNATURE_KEY=XXXXXXXX
 * [BCryptJS](https://www.npmjs.com/package/bcryptjs) - This is an NPM package that lets you encrypt the passwords before you store them on the server
 * [Mongoose Encryption](https://www.npmjs.com/package/mongoose-encryption) - A library that encrypts all the data that is stored in mongodb
 
+## Architecture [Backend]
+The backend of DocuBox uses [***MVC (Model View Controller)***](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) architecture.
+
+![](https://miro.medium.com/max/1018/1*Bls-krmgBxDrULOoBwRNUA.png)
 
 # Package Structure [Backend]
     
@@ -123,10 +125,16 @@ SIGNATURE_KEY=XXXXXXXX
     └── package.json        # Contains list of all the libraries / modules required to run the nodejs server
 
 
-## Architecture [Backend]
-This nodejs server uses [***MVC (Model View Controller)***]([https://developer.android.com/jetpack/docs/guide#recommended-app-arch](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)) architecture.
+## Database Schemas
+|   |   |   |
+|---|---|---|
+| User Schema | File Schema | Folder Schema
+|![](graphics/userSchema.png)| ![](graphics/fileSchema.png) | ![](graphics/folderSchema.png)
 
-![](https://miro.medium.com/max/1018/1*Bls-krmgBxDrULOoBwRNUA.png)
+## Available APIs [Backend]
+The backend of DocuBox provides many different APIs to perform different operations such as file upload, create folder, share folder, view file etc. All the available APIs and their corresponding controllers can be found inside the routes folder.
+
+![](graphics/postman.jpg)
 
 ---
 
