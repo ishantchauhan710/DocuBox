@@ -108,7 +108,7 @@ The backend of DocuBox uses [***MVC (Model View Controller)***](https://en.wikip
 
 ![](https://miro.medium.com/max/1018/1*Bls-krmgBxDrULOoBwRNUA.png)
 
-# Package Structure [Backend]
+# Package Structure [Backend] :open_file_folder:
     
     docubox                 # Root Directory
     .
@@ -131,23 +131,15 @@ The backend of DocuBox uses [***MVC (Model View Controller)***](https://en.wikip
 | User Schema | File Schema | Folder Schema
 |![](graphics/userSchema.png)| ![](graphics/fileSchema.png) | ![](graphics/folderSchema.png)
 
-## Available APIs [Backend]
+## Available APIs [Backend] :computer:
 The backend of DocuBox provides many different APIs to perform different operations such as file upload, create folder, share folder, view file etc. All the available APIs and their corresponding controllers can be found inside the routes folder.
 
 ![](graphics/postman.jpg)
 
 ---
 
-## If you like my projects and want to support me to build more cool open source projects
-  
-<a href="https://www.buymeacoffee.com/VaibhavJaiswal"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=VaibhavJaiswal&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"></a>
-
----
-
- ## Contact
-If you need any help, you can connect with me.
-
-Visit:- [Vaibhav Jaiswal](https://vaibhavjaiswal.vercel.app/#/)
+## Contact
+For any queries, you can mail me at developerishant710@gmail.com
   
 
 
