@@ -44,7 +44,7 @@ DocuBox is an open source cloud file storing app. One can upload their files, vi
 
 
 ## Setup [Android App]
-For this, you can refer to the Android Repository of DocuBox to setup the android part of DocuBox
+For this, you can refer to the [Android Repository](https://github.com/Vaibhav2002/DocuBox-AndroidApp) of DocuBox to setup the android part of DocuBox
 
 ## Setup [Backend]
 To setup the backend of this project, you will need a cloud hosting service provider like Linode, Digital Ocean or Amazon Web Services. Once you get the account, you need to configure a server where your backend will run on. For this project, I have used an ubuntu server however, you can go with any server you are comfortable with. Once you are done with this, follow the following steps to setup the backend of this project!
@@ -126,10 +126,12 @@ The backend of DocuBox uses [***MVC (Model View Controller)***](https://en.wikip
 
 
 ## Database Schemas
-|   |   |   |
-|---|---|---|
-| User Schema | File Schema | Folder Schema
-|![](graphics/userSchema.png)| ![](graphics/fileSchema.png) | ![](graphics/folderSchema.png)
+#### User Schema   
+![](graphics/userSchema.png)
+#### File Schema
+![](graphics/fileSchema.png) 
+#### Folder Schema
+![](graphics/folderSchema.png)
 
 ## Available APIs [Backend] :computer:
 The backend of DocuBox provides many different APIs to perform different operations such as file upload, create folder, share folder, view file etc. All the available APIs and their corresponding controllers can be found inside the routes folder.
