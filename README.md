@@ -1,3 +1,5 @@
+![](graphics/graphicA.png)
+
 # **DocuBox** 
 
 **DocuBox** is a cloud based file storing app where you can securely store and access your documents from anywhere around the world!
@@ -8,9 +10,17 @@
 
 [![DocuBox](https://img.shields.io/badge/DocuBox✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/Vaibhav2002/DocuBox-AndroidApp/releases/tag/v1.0.0)
 
+![](graphics/graphicB.png)
+
 ## About
 
 DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
+
+### Insights into the app 🔎
+
+![](graphics/graphicC.png)
+![](graphics/graphicD.png)
+
 
 ### App Features
 
@@ -86,63 +96,37 @@ SIGNATURE_KEY=XXXXXXXX
 8. Finally start the nodejs backend server using "npm start" command 
 
 
-### Insights into the app 🔎
+## Built With [Backend] 🛠
+* [NodeJS](https://nodejs.org/en/about/) - NodeJS is something that allows you to write javascript code on a server! Traditionally, javascript was only available for frontend design purpose however, with NodeJS, you can use javascript for backend purpose too!
+* [ExpressJS](https://expressjs.com/) - ExpressJS is a framework that drastically reduces the amount of backend code we write in NodeJS. It is highly flexible and makes things a lot easier!
+* [MongoDB](https://www.mongodb.com/) - MongoDB is a NoSQL Database that unlike SQL, stores data in form of collections!
+* [AWS SDk](https://www.npmjs.com/package/aws-sdk) - A software development kit provided by amazon web services, it lets you easily access and manipulate the data stored in your cloud's object storage
+* [Multer](https://www.npmjs.com/package/multer) - A middleware for handling multipart/form-data, which is primarily used for uploading files
+* [BCryptJS](https://www.npmjs.com/package/bcryptjs) - This is an NPM package that lets you encrypt the passwords before you store them on the server
+* [Mongoose Encryption](https://www.npmjs.com/package/mongoose-encryption) - A library that encrypts all the data that is stored in mongodb
 
-<!-- Place all mockups and banners here -->
 
-![summary.jpg](media/summary.png)
-
-
-## Built With 🛠
-- [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
-- [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - For asynchronous and more..
-- [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) - A cold asynchronous data stream that sequentially emits values and completes normally or with an exception.
- - [StateFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow) - StateFlow is a state-holder observable flow that emits the current and new state updates to its collectors.
- - [SharedFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow) - A SharedFlow is a highly-configurable generalization of StateFlow.
-- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) - Collection of libraries that help you design robust, testable, and maintainable apps.
-  - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - Stores UI-related data that isn't destroyed on UI changes. 
-  - [ViewBinding](https://developer.android.com/topic/libraries/view-binding) - Generates a binding class for each XML layout file present in that module and allows you to more easily write code that interacts with views.
-  - [DataBinding](https://developer.android.com/topic/libraries/data-binding) - Binds data directly into XML layouts
-  - [Room](https://developer.android.com/training/data-storage/room) - Room is an android library which is an ORM which wraps android's native SQLite database
-  - [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - Jetpack DataStore is a data storage solution that allows you to store key-value pairs or typed objects with protocol buffers.
-- [Dependency Injection](https://developer.android.com/training/dependency-injection) - 
-  - [Hilt-Dagger](https://dagger.dev/hilt/) - Standard library to incorporate Dagger dependency injection into an Android application.
-  - [Hilt-ViewModel](https://developer.android.com/training/dependency-injection/hilt-jetpack) - DI for injecting `ViewModel`.
-- [GSON](https://github.com/google/gson) - A modern JSON library for Kotlin and Java.
-- [Timber](https://github.com/JakeWharton/timber) - A simple logging library for android.
-- [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java.
-- [GSON Converter](https://github.com/square/retrofit/tree/master/retrofit-converters/gson) - A Converter which uses Moshi for serialization to and from JSON.
-- [Coil](https://github.com/coil-kt/coil) - An image loading library for Android backed by Kotlin Coroutines.
-- [Material Components for Android](https://github.com/material-components/material-components-android) - Modular and customizable Material Design UI components for Android.
-
-# Package Structure
+# Package Structure [Backend]
     
-    com.docubox             # Root Package
+    docubox                 # Root Directory
     .
-    ├── data                # For data handling.
-    |   ├── local           # Local Datasource and classes
-    |   ├── remote          # Remote datasources and API Service
-    │   ├── model           # Model data classes and mapper classes, both remote and local entities
-    │   └── repo            # Single source of data.
+    ├── backend             # Contains all the nodejs server code
+    |   ├── config          # Contains configuration files for jwt token generation, mongoose and multer
+    |   ├── controllers     # Contains files with functions that will get executed on specified routes
+    │   ├── middlewares     # Contains functions that will be executed before a particular controller, helps in authorization and error handling
+    │   ├── models          # Contains files which define the schema or database structure of a particular collection in mongodb
+    │   ├── routes          # Defines the API endpoints and the controller function to be called on them
+    │   ├── util            # Contains utility files for file management
+    │   ├── views           # Contains EJS files which will be shown when a user tries to open an image, video or audio file in the app
+    │   └── server.js       # The main nodejs server file which binds everything together and starts the server
     |
-    ├── service             # Foreground Service to upload File to server
-    |
-    ├── di                  # Dependency Injection             
-    │   └── module          # DI Modules
-    |
-    ├── ui                  # UI/View layer
-    |   ├── adapters        # Adapter, ViewHolder and DiffUtil
-    |   └── screens         # All App Screens 
-    |
-    └── utils               # Utility Classes / Kotlin extensions
+    └── package.json        # Contains list of all the libraries / modules required to run the nodejs server
 
 
-## Architecture
-This app uses [***MVVM (Model View View-Model)***](https://developer.android.com/jetpack/docs/guide#recommended-app-arch) architecture.
+## Architecture [Backend]
+This nodejs server uses [***MVC (Model View Controller)***]([https://developer.android.com/jetpack/docs/guide#recommended-app-arch](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)) architecture.
 
-![](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
-  
-
+![](https://miro.medium.com/max/1018/1*Bls-krmgBxDrULOoBwRNUA.png)
 
 ---
 
