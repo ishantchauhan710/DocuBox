@@ -14,8 +14,9 @@
 
 ## About
 
-DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
+DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format. 
 
+Watch this [video](https://www.youtube.com/watch?v=z94j9FA-5oY) to get a glimpse about this app.
 
 ### App Features
 
