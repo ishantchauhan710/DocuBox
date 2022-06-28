@@ -2,23 +2,26 @@
 
 # **DocuBox** 
 
-**DocuBox** is a cloud based file storing app where you can securely store and access your documents from anywhere around the world!
+**DocuBox** is an app where you can securely upload your files on the cloud – from family pictures and audio recordings to spreadsheets, presentations and other confidential documents. All the files uploaded by the users are stored in an encrypted format.
 
-# Application Install
+This project is developed by **Team 404** for Hashnode x Linode hackathon. This team comprises of [Ishant](https://github.com/ishantchauhan710/) and [Vaibhav](https://github.com/Vaibhav2002).
+
+## Blog :writing_hand:
+To know more about how I build this project, read my article here
+
+## About
+
+DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format.
+
+Here is a short [video](https://www.youtube.com/watch?v=z94j9FA-5oY) on DocuBox
+
+## Application Install
 
 ***You can install the latest version of DocuBox app from the link given below 👇***
 
 [![DocuBox](https://img.shields.io/badge/DocuBox✅-APK-red.svg?style=for-the-badge&logo=android)](https://github.com/Vaibhav2002/DocuBox-AndroidApp/releases/tag/v1.0.0)
 
-![](graphics/graphicB.png)
-
-## About
-
-DocuBox is an open source cloud file storing app. One can upload their files, view them on cloud or download them and also share them with their friends and colleagues. All the files uploaded by the users are stored in an encrypted format. 
-
-Watch this [video](https://www.youtube.com/watch?v=z94j9FA-5oY) to get a glimpse about this app.
-
-### App Features
+## App Features
 
 - **User Authentication** - Supports email based authentication
 - **File Uploading** - You can upload your files on DocuBox and access it from anywhere around the world.
@@ -28,7 +31,7 @@ Watch this [video](https://www.youtube.com/watch?v=z94j9FA-5oY) to get a glimpse
 - **File Download** - You can download your files and save them locally for offline usage.
 - **File Search** - Enhanced file searching which can give results quickly.
 
-### Technical details
+## Technical details
 
 - The frontend of DocuBox is an android app which is written using Kotlin. It follows MVVM architecture, SOLID and MAD principles, and other best practices for clean and scalable code.
 
@@ -109,7 +112,7 @@ The backend of DocuBox uses [***MVC (Model View Controller)***](https://en.wikip
 
 ![](https://miro.medium.com/max/1018/1*Bls-krmgBxDrULOoBwRNUA.png)
 
-# Package Structure [Backend] :open_file_folder:
+## Package Structure [Backend] :open_file_folder:
     
     docubox                 # Root Directory
     .
