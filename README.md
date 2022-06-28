@@ -7,7 +7,7 @@
 This project is developed by **Team 404** for Hashnode x Linode hackathon. This team comprises of [Ishant](https://github.com/ishantchauhan710/) and [Vaibhav](https://github.com/Vaibhav2002).
 
 ## Blog :writing_hand:
-To know more about how I build this project, read my article here: <br>
+To know more about how we built this project, read my article here: <br>
 [https://ishantchauhan.hashnode.dev/docubox-securely-store-access-and-share-your-files-on-cloud](https://ishantchauhan.hashnode.dev/docubox-securely-store-access-and-share-your-files-on-cloud)
 
 ## About
