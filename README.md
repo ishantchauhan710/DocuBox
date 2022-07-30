@@ -146,7 +146,6 @@ The backend of DocuBox provides many different APIs to perform different operati
 ## Attribution
 The project is deployed on [Linode](https://www.linode.com) for the [Hashnode X Linode Hackathon](https://townhall.hashnode.com/build-with-linode-hackathon-june-2022).
 
-
 ## Contact
 For any queries, you can mail me at developerishant710@gmail.com
   
